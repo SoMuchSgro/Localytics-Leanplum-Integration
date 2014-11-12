@@ -7,6 +7,9 @@
 //
 
 #import "ViewController.h"
+#import <Leanplum/Leanplum.h>
+#import "LocalyticsSession.h"
+DEFINE_VAR_STRING(welcomeMessage, @"Welcome to Leanplum!");
 
 @interface ViewController ()
 
@@ -14,14 +17,28 @@
 
 @implementation ViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    [Leanplum onVariablesChanged:^{
+        NSLog(@"%@", welcomeMessage.stringValue);
+    }];
+
+    [self addAlertView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)addAlertView{
+UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:
+                              @"Title" message: welcomeMessage.stringValue delegate:self
+                                             cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+
+    [alertView show];
 }
 
 @end
